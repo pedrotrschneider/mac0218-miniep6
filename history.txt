@@ -1,0 +1,20 @@
+# Comando para realizar a build inicial da imagem customizada do Caddy
+docker image build . -t custom-caddy:1.0
+
+# Comando para rodar a imagem de build
+docker container run             \
+      --name my-caddy-server     \
+      -p 8080:80                 \
+      -d custom-caddy:1.0
+
+# Parando a execução do contêiner e excluindo a imagem
+docker container stop my-caddy-server
+docker container rm my-caddy-server
+
+# Rodando o contêiner com volumes para alteração mais simples dos arquivos
+docker container run           	\
+      --name my-caddy-server  	\
+      -p 8080:80       			\
+      -v ./pages:/usr/src/pages	\
+      -v ./config:/etc/caddy	\
+      -d custom-caddy:1.0
